@@ -24,8 +24,8 @@ int divisorSum(int n)
             {
                 j *= p;
                 n /= p;
-
             }
+
             sum *= j - 1;
             sum /= p - 1;
         }
