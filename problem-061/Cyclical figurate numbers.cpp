@@ -73,7 +73,7 @@ void dfs(polygon next, int* mark)
     return;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     //45 - 140 triangular
     //32 - 99 square
@@ -82,6 +82,7 @@ int main()
     //21 - 63 heptagonal
     //19 - 58 octagonal
 
+	
     int tr = 1;
 
     for (int n = 45; n <= 140; n++)
