@@ -5,12 +5,10 @@
 #include <algorithm>
 #include <sstream>
 
-using namespace std;
-
 class bigint
 {
 private:
-	vector<int> num;
+	std::vector<int> num;
     static const int base = 1000000000;
     bool positive;
     int zeros;
@@ -18,7 +16,7 @@ private:
 public:
     bigint();
     bigint(long long int);
-    bigint(string);
+    bigint(std::string);
     bigint(const bigint& b);
 
     //bigint& operator=(const bigint&);
@@ -45,8 +43,8 @@ public:
     
     int operator[](int const&);
 
-    friend ostream& operator<<(ostream&, bigint const&);
-    friend istream& operator>>(istream&, bigint&);
+    friend std::ostream& operator<<(std::ostream&, bigint const&);
+    friend std::istream& operator>>(std::istream&, bigint&);
 
 private:
     int compare(bigint const&) const;

@@ -25,7 +25,7 @@ bigint::bigint(long long int b)
     }
 }
 
-bigint::bigint(string s)
+bigint::bigint(std::string s)
 {
     positive = (s[0] == '-') ? false : true;
     zeros = 0;
@@ -152,108 +152,68 @@ bigint bigint::operator-(bigint const& b) const
     bigint c = *this;
     c -= b;
 
-
     return c;
 }
 
 bigint& bigint::operator-=(bigint const& b)
 {
-    vector<int> res;
-
-    int carry = 0;
-
     if (*this == b)
     {
         num.clear();
         num.push_back(0);
         return *this;
     }
-    else if (*this > b)
+
+    int carry = 0;
+
+    std::vector<int> res;
+    std::vector<int>::const_iterator it = num.begin();
+    std::vector<int>::const_iterator jt = b.num.begin();
+    std::vector<int>::const_iterator iend = num.end();
+    std::vector<int>::const_iterator jend = b.num.end();
+
+    if (num.size() < b.num.size())
     {
-        vector<int>::iterator it = num.begin();
-        vector<int>::const_iterator jt = b.num.begin();
-
-        while (jt != b.num.end())
-        {
-            int sub = *(it)-*(jt)-carry;
-
-            if (sub < 0)
-            {
-                sub = sub + base;
-                carry = 1;
-            }
-            else
-                carry = 0;
-
-            res.push_back(sub);
-
-            it++;
-            jt++;
-        }
-
-        while (it != num.end())
-        {
-            if (*it == 0 && carry)
-            {
-                res.push_back(base - 1);
-                it++;
-                continue;
-            }
-
-            int sub = *it - carry;
-
-            if (it != num.end() - 1 || sub > 0)
-                res.push_back(sub);
-            carry = 0;
-
-            it++;
-        }
-    }
-
-    else
-    {
+        swap(it, jt);
+        swap(iend, jend);
         positive = false;
-
-        vector<int>::const_iterator it = b.num.begin();
-        vector<int>::iterator jt = num.begin();
-
-        while (jt != num.end())
-        {
-            int sub = *(it)-*(jt)-carry;
-
-            if (sub < 0)
-            {
-                sub = sub + base;
-                carry = 1;
-            }
-            else
-                carry = 0;
-
-            res.push_back(sub);
-
-            it++;
-            jt++;
-        }
-
-        while (it != b.num.end())
-        {
-            if (*it == 0 && carry)
-            {
-                res.push_back(base - 1);
-                it++;
-                continue;
-            }
-
-            int sub = *it - carry;
-
-            if (it != b.num.end() - 1 || sub > 0)
-                res.push_back(sub);
-            carry = 0;
-
-            it++;
-        }
     }
-
+    
+    while (jt != jend)
+    {
+        int sub = *(it)-*(jt)-carry;
+    
+        if (sub < 0)
+        {
+            sub = sub + base;
+            carry = 1;
+        }
+        else
+            carry = 0;
+    
+        res.push_back(sub);
+    
+        it++;
+        jt++;
+    }
+    
+    while (it != iend)
+    {
+        if (*it == 0 && carry)
+        {
+            res.push_back(base - 1);
+            it++;
+            continue;
+        }
+    
+        int sub = *it - carry;
+    
+        if (it != iend - 1 || sub > 0)
+            res.push_back(sub);
+        carry = 0;
+    
+        it++;
+    }
 
     num = res;
 
@@ -359,16 +319,16 @@ int bigint::compare(bigint const& b) const
     return 0;
 }
 
-string bigint::to_string(bigint const& b)
+std::string bigint::to_string(bigint const& b)
 {
-    ostringstream stream;
+    std::ostringstream stream;
 
     stream << b;
     
     return stream.str();
 }
 
-ostream& operator<<(ostream& stream, bigint const& b)
+std::ostream& operator<<(std::ostream& stream, bigint const& b)
 {
     int size = b.num.size() - 2;
 
@@ -399,9 +359,9 @@ ostream& operator<<(ostream& stream, bigint const& b)
     return stream;
 }
 
-istream& operator>>(istream& stream, bigint& b)
+std::istream& operator>>(std::istream& stream, bigint& b)
 {
-    string str;
+    std::string str;
     stream >> str;
 
     b = str;
