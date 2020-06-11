@@ -152,6 +152,7 @@ bigint bigint::operator-(bigint const& b) const
     bigint c = *this;
     c -= b;
 
+
     return c;
 }
 
@@ -253,7 +254,11 @@ bigint& bigint::operator-=(bigint const& b)
         }
     }
 
+
     num = res;
+
+    while (num[num.size() - 1] == 0)
+        num.pop_back();
 
     return *this;
 }
@@ -328,6 +333,11 @@ bool bigint::operator!=(const bigint& b) const
     return compare(b) != 0;
 }
 
+int bigint::operator[](int const& b)
+{
+    return to_string(*this)[b] - '0';
+}
+
 int bigint::compare(bigint const& b) const
 {
     if (positive && !b.positive) return 1;
@@ -347,6 +357,15 @@ int bigint::compare(bigint const& b) const
     }
 
     return 0;
+}
+
+string bigint::to_string(bigint const& b)
+{
+    ostringstream stream;
+
+    stream << b;
+    
+    return stream.str();
 }
 
 ostream& operator<<(ostream& stream, bigint const& b)
@@ -376,6 +395,16 @@ ostream& operator<<(ostream& stream, bigint const& b)
             stream << b.num[i];
         }
     }
+
+    return stream;
+}
+
+istream& operator>>(istream& stream, bigint& b)
+{
+    string str;
+    stream >> str;
+
+    b = str;
 
     return stream;
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -42,9 +43,13 @@ public:
     bool operator==(const bigint&) const;
     bool operator!=(const bigint&) const;
     
+    int operator[](int const&);
+
     friend ostream& operator<<(ostream&, bigint const&);
+    friend istream& operator>>(istream&, bigint&);
 
 private:
     int compare(bigint const&) const;
+    std::string to_string(bigint const&);
 };
 
