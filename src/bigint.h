@@ -12,6 +12,8 @@ private:
 	vector<int> num;
     static const int base = 1000000000;
     bool positive;
+    int zeros;
+
 public:
     bigint();
     bigint(long long int);

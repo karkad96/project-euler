@@ -4,11 +4,13 @@ bigint::bigint()
 {
     num.push_back(0);
     positive = true;
+    zeros = 0;
 }
 
 bigint::bigint(long long int b)
 {
     positive = true;
+    zeros = 0;
 
     if (b < 0)
     {
@@ -26,6 +28,7 @@ bigint::bigint(long long int b)
 bigint::bigint(string s)
 {
     positive = (s[0] == '-') ? false : true;
+    zeros = 0;
 
     if (s[0] == '-')
         s.erase(s.begin());
@@ -48,7 +51,7 @@ bigint::bigint(string s)
 }
 
 bigint::bigint(const bigint& b)
-    : num(b.num), positive(b.positive) {}
+    : num(b.num), positive(b.positive), zeros(b.zeros) {}
 
 bigint bigint::operator+(bigint const& b) const
 {
@@ -108,12 +111,12 @@ bigint bigint::operator+(long long int const& b) const
 bigint& bigint::operator+=(long long int b)
 {
     int carry = 0;
-    unsigned int size = ((int)log10(b) + 1) / base;
+    unsigned int size = (int)ceil((log10(b) + 1) / 9.0);
 
-    while (num.size() < size)
+    while (num.size() < size + zeros)
         num.push_back(0);
 
-    auto i = num.begin();
+    auto i = num.begin() + zeros;
 
     while (i != num.end() and b)
     {
@@ -137,6 +140,9 @@ bigint& bigint::operator+=(long long int b)
         if (carry)
             num.push_back(carry);
     }
+
+    while (num[num.size() - 1] == 0)
+        num.pop_back();
 
     return *this;
 }
@@ -254,7 +260,20 @@ bigint& bigint::operator-=(bigint const& b)
 
 bigint bigint::operator*(bigint const& b)
 {
-    return bigint();
+    bigint c;
+
+    for (auto i = num.begin(); i != num.end(); i++)
+    {
+        for (auto j = b.num.begin(); j != b.num.end(); j++)
+        {
+            c.zeros = (i - num.begin()) + (j - b.num.begin());
+            c += (long long int)(*i) * (*j);
+        }
+    }
+
+    c.zeros = 0;
+
+    return c;
 }
 
 bigint& bigint::operator*=(bigint const& b)
