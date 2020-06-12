@@ -20,7 +20,7 @@ bigint::bigint(long long int b)
 
     while (b)
     {
-        num.push_back((int)b % base);
+        num.push_back((int)(b % base));
         b /= base;
     }
 }
@@ -247,15 +247,38 @@ bigint& bigint::operator*=(bigint const& b)
 
     return *this;
 }
-
-bigint bigint::operator*(long long const&)
+ 
+bigint bigint::operator*(long long const& b)
 {
+    bigint c;
 
-    return *this;
+    std::vector<int> tmp;
+    long long int tp = b;
+
+    while (tp)
+    {
+        tmp.push_back(tp % base);
+        tp /= base;
+    }
+
+    for (auto i = num.begin(); i != num.end(); i++)
+    {
+        for (auto j = tmp.begin(); j != tmp.end(); j++)
+        {
+            c.zeros = (i - num.begin()) + (j - tmp.begin());
+            c += (long long int)(*i) * (*j);
+        }
+    }
+
+    c.zeros = 0;
+
+    return c;
 }
 
-bigint& bigint::operator*=(int const&)
+bigint& bigint::operator*=(long long int const& b)
 {
+    *this = *this * b;
+
     return *this;
 }
 

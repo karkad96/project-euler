@@ -32,7 +32,7 @@ public:
     bigint operator*(bigint const&);
     bigint& operator*=(bigint const&);
     bigint operator*(long long const&);
-    bigint& operator*=(int const&);
+    bigint& operator*=(long long int const&);
 
     bool operator<(const bigint&) const;
     bool operator>(const bigint&) const;
