@@ -19,8 +19,6 @@ public:
     bigint(std::string);
     bigint(const bigint& b);
 
-    //bigint& operator=(const bigint&);
-
     bigint operator+(bigint const&) const;
     bigint& operator+=(bigint const&);
     bigint operator+(long long int const&) const;
@@ -45,7 +43,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream&, bigint const&);
     friend std::istream& operator>>(std::istream&, bigint&);
-
+    static long long int to_int64(bigint const&);
 private:
     int compare(bigint const&) const;
     std::string to_string(bigint const&);

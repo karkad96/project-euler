@@ -53,6 +53,7 @@ bigint::bigint(std::string s)
 bigint::bigint(const bigint& b)
     : num(b.num), positive(b.positive), zeros(b.zeros) {}
 
+
 bigint bigint::operator+(bigint const& b) const
 {
     bigint c = *this;
@@ -349,6 +350,20 @@ std::string bigint::to_string(bigint const& b)
     stream << b;
     
     return stream.str();
+}
+
+long long int bigint::to_int64(bigint const& b)
+{
+    auto it = b.num.rbegin();
+    long long int res = 0;
+
+    while (it != b.num.rend())
+    {
+        res = base * res + *it;
+        it++;
+    }
+
+    return res;
 }
 
 std::ostream& operator<<(std::ostream& stream, bigint const& b)
